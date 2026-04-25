@@ -5,3 +5,4 @@ def sol(s: str) -> str:
             stack.pop()
         else:
             stack.append(char)
+    return "".join(stack)

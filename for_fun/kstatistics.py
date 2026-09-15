@@ -35,8 +35,8 @@ def hoar_alg(a: list[int], k: int) -> int:
         # print(k)
         return hoar_alg(less, k)
 
-arr = [2, 3, 1, 0, 6, 2, 9]
+arr = [3,2,3,1,2,4,5,5,6]
 
 print(sorted(arr))
-print(k_stat(arr, 0))
-print(hoar_alg(arr, 0))
+print(k_stat(arr, 4))
+print(hoar_alg(arr, 4))

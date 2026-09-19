@@ -1,8 +1,21 @@
 t = int(input())
 
 for _ in range(t):
-    inp = map(int, input().split())
+    n = int(input())
+    a = list(map(int, input().split()))
 
-    mn, md, mx = sorted(inp)
+    cnt = 0
 
-    print(min(mx-mn, md))
+    for i in range(n):
+        if a[i] == 0 and i not in (0, n-1):
+            if a[0] == 1:
+                a[0], a[i] = a[i], a[0]
+                cnt += 1
+            elif a[-1] == 1:
+                a[-1], a[i] = a[i], a[-1]
+                cnt += 1
+
+    if a[0] == 0 and a[-1] == 0:
+        print(cnt)
+    else:
+        print(-1)

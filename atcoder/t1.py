@@ -1,16 +1,33 @@
-from heapq import heappop, heappush
+from math import ceil
 
-n = int(input())
+n, m, k = map(int, input().split())
+x, y = map(int, input().split())
+a = list(map(int, input().split()))
+b = list(map(int, input().split()))
 
-a = map(int, input().split())
+b.sort(key = lambda x: ceil(x / 10) * 10 - x, reverse=True)
+cnt = 0
 
-s = []
+for drink in b:
+    if y * k >= drink:
+        cnt += 1
 
-for elem in a:
-    heappush(s, elem)
+        diff = ceil(drink / k)
 
-    if len(s) > 3:
-        heappop(s)
+        y -= diff
+        x += diff * k - drink
+    else:
+        break
 
-    if len(s) == 3:
-        print(s[0])
+a.sort()
+x += y * k
+
+for dessert in a:
+    if x >= dessert:
+        cnt += 1
+
+        x -= dessert
+    else:
+        break
+
+print(cnt)

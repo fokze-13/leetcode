@@ -1,24 +1,26 @@
-t = int(input())
+n, q = map(int, input().split())
+a = list(map(int, input().split()))
 
-for _ in range(t):
-    n, k = map(int, input().split())
-    a_s = []
+all_genres = set(range(1, n + 1))
 
-    for i in range(n):
-        a = list(map(int, input().split()))
+set_map = [set()]
 
-        a_s.append(a)
+for g in a:
+    new_set = set_map[-1].copy()
+    new_set.add(g)
 
-    a_s.sort(key = lambda x: sum(x), reverse=True)
+    set_map.append(new_set)
 
-    res = 0
+for i in range(q):
+    l, r = map(int, input().split())
+    l -= 1
+    r -= 1
 
-    arr_pref = 0
+    complement = set_map[r + 1] - set_map[l]
 
-    for arr in a_s:
-        for elem in arr:
-            arr_pref += elem
+    res = all_genres - complement
 
-            res += arr_pref
-
-    print(res)
+    if res:
+        print(list(res)[0])
+    else:
+        print(-1)

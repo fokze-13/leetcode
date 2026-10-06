@@ -1,26 +1,32 @@
-n, q = map(int, input().split())
-a = list(map(int, input().split()))
+def sol(coins: list[int], amount: int) -> int:
+    if amount == 0:
+        return 0
 
-all_genres = set(range(1, n + 1))
+    dp = {}
 
-set_map = [set()]
+    queue = set(coins)
+    layer = 1
 
-for g in a:
-    new_set = set_map[-1].copy()
-    new_set.add(g)
+    while queue:
+        new_queue = set()
 
-    set_map.append(new_set)
+        for elem in queue:
+            if elem > amount:
+                continue
 
-for i in range(q):
-    l, r = map(int, input().split())
-    l -= 1
-    r -= 1
+            elif elem == amount:
+                return layer
 
-    complement = set_map[r + 1] - set_map[l]
+            if dp.get(elem) is None:
+                dp[elem] = set(elem + coin for coin in coins)
 
-    res = all_genres - complement
+            new_queue |= dp[elem]
 
-    if res:
-        print(list(res)[0])
-    else:
-        print(-1)
+        print(new_queue, layer)
+        queue = new_queue
+        layer += 1
+
+    return -1
+
+
+print(sol([1, 2, 5], 100))

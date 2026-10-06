@@ -1,32 +1,16 @@
 def sol(coins: list[int], amount: int) -> int:
-    if amount == 0:
-        return 0
+    dp = [float("inf")] * (amount + 1)
+    dp[0] = 0
 
-    dp = {}
+    for i in range(1, amount + 1):
+        print(dp)
+        for coin in coins:
+            if i - coin >= 0:
+                dp[i] = min(dp[i], dp[i - coin] + 1)
 
-    queue = set(coins)
-    layer = 1
-
-    while queue:
-        new_queue = set()
-
-        for elem in queue:
-            if elem > amount:
-                continue
-
-            elif elem == amount:
-                return layer
-
-            if dp.get(elem) is None:
-                dp[elem] = set(elem + coin for coin in coins)
-
-            new_queue |= dp[elem]
-
-        print(new_queue, layer)
-        queue = new_queue
-        layer += 1
-
-    return -1
+    if dp[amount] == float("inf"):
+        return - 1
+    return int(dp[amount])
 
 
-print(sol([1, 2, 5], 100))
+print(sol([1, 2, 5], 11))

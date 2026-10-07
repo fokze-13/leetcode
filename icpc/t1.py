@@ -1,15 +1,19 @@
-n = int(input())
+t = int(input())
 
-ans = {}
-f = 2
-while f * f <= n:
-    while n % f == 0:
-        ans[f] = ans.get(f, 0) + 1
-        n //= f
-    f += 1
+for _ in range(t):
 
-if n > 1:
-    ans[n] = ans.get(n, 0) + 1
+    n = int(input())
+    k = 2
 
-res = [f"{k}^{v}" if v > 1 else f"{k}" for k, v in ans.items()]
-print("*".join(res))
+    while k * (k + 1) // 2 <= n:
+
+        rem = n - k * (k - 1) // 2
+
+        if rem % k == 0:
+            a = rem // k
+
+            print(f"{n} = " + " + ".join(str(a + i) for i in range(k)))
+            break
+        k += 1
+    else:
+        print("IMPOSSIBLE")

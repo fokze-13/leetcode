@@ -1,16 +1,23 @@
-a, n = map(int, input().split())
+import sys
 
-sieve = [1] * (n + 1)
+data = sys.stdin.read().split()
+
+ms = [int(data[i]) for i in range(0, len(data), 2)]
+ns = [int(data[i+1]) for i in range(0, len(data), 2)]
+
+n_max = max(ns)
+
+sieve = [1] * (n_max + 1)
 sieve[0] = 0
 
-for i in range(2, n + 1):
-    for j in range(i, n + 1, i):
+for i in range(2, n_max + 1):
+    for j in range(i, n_max + 1, i):
         sieve[j] += 1
 
-filtered = []
+for i in range(1, n_max + 1):
+    if sieve[i] == 2:
+        sieve[i] = sieve[i - 1] + 1
+    else:
+        sieve[i] = sieve[i - 1]
 
-for i in range(n + 1):
-    if a <= i <= n + 1 and sieve[i] == 2:
-        filtered.append(i)
-
-print(*filtered)
+print("\n\n".join(str(sieve[n] - sieve[m - 1]) for n, m in zip(ns, ms)))

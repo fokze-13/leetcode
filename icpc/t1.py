@@ -1,19 +1,10 @@
-t = int(input())
+n = int(input())
 
-for _ in range(t):
+sieve = [1] * (n + 1)
+sieve[0] = 0
 
-    n = int(input())
-    k = 2
+for i in range(2, n + 1):
+    for j in range(i, n + 1, i):
+        sieve[j] += 1
 
-    while k * (k + 1) // 2 <= n:
-
-        rem = n - k * (k - 1) // 2
-
-        if rem % k == 0:
-            a = rem // k
-
-            print(f"{n} = " + " + ".join(str(a + i) for i in range(k)))
-            break
-        k += 1
-    else:
-        print("IMPOSSIBLE")
+print(sum(sieve))

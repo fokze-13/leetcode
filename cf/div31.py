@@ -1,30 +1,40 @@
 t = int(input())
 
 for _ in range(t):
-    n = int(input())
-    cs = input()
+    n, k = map(int, input().split())
 
-    h = {no: False for no in range(1, n + 1)}
-    stack = []
+    a = []
+    b = []
+    c = []
+
+    d = []
 
     for i in range(n):
-        no = i + 1
+        a_i, b_i, c_i = map(int, input().split())
 
-        if cs[i] == "1":
-            stack.append(no)
-        elif cs[i] == "2":
-            if stack:
-                popped = stack.pop()
-                h[popped] = True
-            else:
-                h[no] = True
-        elif cs[i] == "3":
-            h[no] = True
+        a.append(a_i)
+        b.append(b_i)
+        c.append(c_i)
 
-    ans = []
-    for k, v in h.items():
-        if not v:
-            ans.append(k)
+        d.append((i, sum((a_i, b_i, c_i))))
 
-    print(len(ans))
-    print(*ans)
+    d.sort(key=lambda x: x[1])
+
+    j = 0
+    min_i, min_sum = d[j]
+
+    while k > 0:
+        if a[min_i] == b[min_i] == c[min_i]:
+            print(min_sum)
+            break
+
+        if d[j + 1][1] - d[j][1] > k:
+            print(d[j][1] + k)
+
+            k -= d[j + 1][1] - d[j][1]
+        else:
+            j += 1
+
+        min_i, min_sum = d[j]
+    else:
+        print(min_sum)

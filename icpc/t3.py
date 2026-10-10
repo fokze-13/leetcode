@@ -1,15 +1,16 @@
-n = int(input())
+while (n := int(input())) != 0:
+    ans = n
+    f = 2
 
-res = []
+    while f * f <= n:
+        if n % f == 0:
+            ans -= ans / f
 
-while n > 0:
-    n, rem = divmod(n, 2)
+        while n % f == 0:
+            n //= f
+        f += 1
 
-    if rem == 1:
-        res.append("SX")
-    else:
-        res.append("S")
+    if n > 1:
+        ans -= ans / n
 
-res.pop()
-
-print("".join(res[::-1]))
+    print(int(ans))

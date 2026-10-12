@@ -1,6 +1,12 @@
-s = input()
-b = int(input())
+n = int(input())
+a = map(int, input().split())
 
-for char in s:
-    print(chr( (ord(char) - 65 - b) % 26 + 65 ), end="")
-print()
+pref = [0]
+for i in a:
+    pref.append(pref[-1] + i)
+
+m = int(input())
+for _ in range(m):
+    l, r = map(int, input().split())
+
+    print(pref[r] - pref[l - 1])

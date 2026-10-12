@@ -1,9 +1,9 @@
-x = list(map(int, input().split()))
+n = int(input())
 
-m = float("inf")
+res = ["2"] * (n // 2)
 
-for i in range(min(x), max(x) + 1):
-    d = abs(x[0] - i) + abs(x[1] - i) + abs(x[2] - i)
-    m = min(m, d)
+if n % 2 == 1:
+    res[-1] = "3"
 
-print(m)
+print(n // 2)
+print(" ".join(res))

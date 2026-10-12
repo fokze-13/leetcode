@@ -1,12 +1,15 @@
 n = int(input())
-a = map(int, input().split())
 
-pref = [0]
-for i in a:
-    pref.append(pref[-1] + i)
+f = 2
+cnt = 0
 
-m = int(input())
-for _ in range(m):
-    l, r = map(int, input().split())
+while f * f <= n:
+    while n % f == 0:
+        cnt += 1
+        n //= f
+    f += 1
 
-    print(pref[r] - pref[l - 1])
+if cnt == 0 and n != 1:
+    print("Yes")
+else:
+    print("No")

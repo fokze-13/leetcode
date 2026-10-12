@@ -1,15 +1,19 @@
-n = int(input())
+t = int(input())
 
-f = 2
-cnt = 0
+for _ in range(t):
+    n, k = map(int, input().split())
+    a = list(map(int, input().split()))
 
-while f * f <= n:
-    while n % f == 0:
-        cnt += 1
-        n //= f
-    f += 1
+    while len(a) >= k:
+        new_a = []
+        i = 0
 
-if cnt == 0 and n != 1:
-    print("Yes")
-else:
-    print("No")
+        while i + k <= len(a):
+            new_a.append(sum(a[i : i + k]))
+            i += k
+
+        new_a.extend(a[i:])
+
+        a = new_a
+
+    print(*a)

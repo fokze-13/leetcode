@@ -1,9 +1,11 @@
-n = int(input())
+n, m = map(int, input().split())
 
-res = ["2"] * (n // 2)
+mn_team_num = n // m
+left_team_m = n % m
 
-if n % 2 == 1:
-    res[-1] = "3"
+mn = (left_team_m * mn_team_num * (mn_team_num + 1) + (m - left_team_m) * mn_team_num * (mn_team_num - 1)) // 2
 
-print(n // 2)
-print(" ".join(res))
+mx_team_num = n - m + 1
+mx = (mx_team_num * (mx_team_num - 1)) // 2
+
+print(mn, mx)

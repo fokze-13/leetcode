@@ -1,40 +1,29 @@
+from math import comb
+
 t = int(input())
 
+def func(x: int) -> int:
+    res = 0
+    while x > 0:
+        res += (x % 10) ** 2
+        x //= 10
+    return res
+
 for _ in range(t):
-    n, k = map(int, input().split())
+    n = int(input())
+    a = map(int, input().split())
 
-    a = []
-    b = []
-    c = []
+    d = {1: 0}
 
-    d = []
+    for num in a:
+        for i in range(50):
+            num = func(num)
 
-    for i in range(n):
-        a_i, b_i, c_i = map(int, input().split())
+        d[num] = d.get(num, 0) + 1
 
-        a.append(a_i)
-        b.append(b_i)
-        c.append(c_i)
+    res = 0
 
-        d.append((i, sum((a_i, b_i, c_i))))
+    for v in d.values():
+        res += comb(v, 2)
 
-    d.sort(key=lambda x: x[1])
-
-    j = 0
-    min_i, min_sum = d[j]
-
-    while k > 0:
-        if a[min_i] == b[min_i] == c[min_i]:
-            print(min_sum)
-            break
-
-        if d[j + 1][1] - d[j][1] > k:
-            print(d[j][1] + k)
-
-            k -= d[j + 1][1] - d[j][1]
-        else:
-            j += 1
-
-        min_i, min_sum = d[j]
-    else:
-        print(min_sum)
+    print(res)

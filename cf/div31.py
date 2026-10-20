@@ -1,29 +1,31 @@
-from math import comb
+from heapq import heappush_max, heappop_max, heapify_max
 
 t = int(input())
 
-def func(x: int) -> int:
-    res = 0
-    while x > 0:
-        res += (x % 10) ** 2
-        x //= 10
-    return res
-
 for _ in range(t):
-    n = int(input())
-    a = map(int, input().split())
+    n, m = map(int, input().split())
+    a = list(map(int, input().split()))
 
-    d = {1: 0}
+    if m == 1:
+        print(max(a))
+        continue
 
-    for num in a:
-        for i in range(50):
-            num = func(num)
+    hp = a[:m - 1]
+    heapify_max(hp)
 
-        d[num] = d.get(num, 0) + 1
+    s = sum(hp)
 
-    res = 0
+    mx = m * a[m - 1] - s
 
-    for v in d.values():
-        res += comb(v, 2)
+    for k in range(m - 1, n - 1):
+        if a[k] < hp[0]:
+            s -= heappop_max(hp)
+            s += a[k]
+            heappush_max(hp, a[k])
 
-    print(res)
+        new = m * a[k + 1] - s
+        mx = max(new, mx)
+
+    print(mx)
+
+

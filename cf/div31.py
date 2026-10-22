@@ -1,31 +1,12 @@
-from heapq import heappush_max, heappop_max, heapify_max
+n = int(input())
 
-t = int(input())
+dp1 = 2
+dp2 = 4
 
-for _ in range(t):
-    n, m = map(int, input().split())
-    a = list(map(int, input().split()))
+for i in range(n - 2):
+    dp1, dp2 = dp2, dp1 + dp2
 
-    if m == 1:
-        print(max(a))
-        continue
-
-    hp = a[:m - 1]
-    heapify_max(hp)
-
-    s = sum(hp)
-
-    mx = m * a[m - 1] - s
-
-    for k in range(m - 1, n - 1):
-        if a[k] < hp[0]:
-            s -= heappop_max(hp)
-            s += a[k]
-            heappush_max(hp, a[k])
-
-        new = m * a[k + 1] - s
-        mx = max(new, mx)
-
-    print(mx)
-
-
+if n == 1:
+    print(dp1)
+else:
+    print(dp2)

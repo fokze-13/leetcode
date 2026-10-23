@@ -1,16 +1,17 @@
 n = int(input())
-a = list(map(int, input().split()))
-a.sort()
 
-INF = float('inf')
+dp = [0, 1]
 
-dp = [INF] * (n + 1)
-dp[0] = 0
-dp[2] = a[1] - a[0]
+for k in range(2, n + 1):
+    mn_s = k
+    for i in range(1, k // 2 + 1):
+        mn_s = min(mn_s, dp[i] + dp[k - i])
 
-for i in range(3, n + 1):
-    dp[i] = dp[i - 2] + a[i - 1] - a[i - 2]
-    dp[i] = min(dp[i], dp[i - 3] + a[i - 1] - a[i - 3])
+    mn_p = k
+    for i in range(2, k):
+        if k % i == 0:
+            mn_p = min(mn_p, dp[i] + dp[k // i])
 
-print(dp)
-print(dp[n])
+    dp.append(min(mn_p, mn_s))
+
+print(dp[-1])

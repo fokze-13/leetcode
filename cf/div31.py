@@ -1,12 +1,6 @@
 n = int(input())
+a = list(map(int, input().split()))
 
-dp1 = 2
-dp2 = 4
+m = int(input())
+b = list(map(int, input().split()))
 
-for i in range(n - 2):
-    dp1, dp2 = dp2, dp1 + dp2
-
-if n == 1:
-    print(dp1)
-else:
-    print(dp2)

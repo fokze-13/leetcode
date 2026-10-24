@@ -1,16 +1,20 @@
-import sys
+n = int(input())
+a = list(map(int, input().split()))
 
-for s in sys.stdin:
+m = int(input())
+b = list(map(int, input().split()))
 
-    dp = [float('inf')] * (len(s) + 1)
-    dp[0] = 0
+dp = [[0] * n for _ in range(m)]
 
-    for i in range(len(s)):
-        if s[i] == 'X':
-            for j in range(i + 1):
-                dp[i + 1] = min(dp[i + 1], dp[j] + (i - j + 1) ** 0.5)
-        else:
-            dp[i + 1] = dp[i]
+for i in range(m):
+    for j in range(n):
+        if j == 0:
+            if i != 0:
+                dp[i][j] = dp[i - 1][j]
 
-    print(round(dp[-1], 4))
+        dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
 
+        if b[i] == a[j]:
+            dp[i][j] += 1
+
+print(dp[-1][-1])

@@ -1,10 +1,15 @@
-n = int(input())
+t = int(input())
 
-cnt = 0
-p = 5
+for _ in range(t):
+    a, b = map(int, input().split())
 
-while p <= n:
-    cnt += n // p
-    p *= 5
+    ta = (a // 3) * 3
+    tb = (b // 3) * 3
 
-print(cnt)
+    if (a - ta, b - tb) in ((0, 0), (1, 2), (2, 1)):
+        if a > b * 2 or b > a * 2:
+            print("NO")
+        else:
+            print("YES")
+    else:
+        print("NO")

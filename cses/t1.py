@@ -1,36 +1,14 @@
-s = input()
+n = int(input())
 
-d = {}
+code = ["0", "1"]
 
-for char in s:
-    d[char] = d.get(char, 0) + 1
+for i in range(n - 1):
+    code_rev = code[::-1]
 
-res = ""
+    for j in range(len(code)):
+        code[j] = "0" + code[j]
+        code_rev[j] = "1" + code_rev[j]
 
-if len(s) % 2 == 0:
-    for k, v in d.items():
-        if v % 2 == 1:
-            print("NO SOLUTION")
-            break
-        else:
-            res += k * (v // 2)
-    else:
-        print(res + res[::-1])
-else:
-    odd_lett = None
+    code.extend(code_rev)
 
-    for k, v in d.items():
-        if v % 2 == 1:
-            if not odd_lett:
-                odd_lett = k
-                res += k * (v // 2)
-            else:
-                print("NO SOLUTION")
-                break
-        else:
-            res += k * (v // 2)
-    else:
-        if odd_lett:
-            print(res + odd_lett + res[::-1])
-        else:
-            print(res + res[::-1])
+print("\n".join(code))

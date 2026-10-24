@@ -1,20 +1,9 @@
-n = int(input())
-a = list(map(int, input().split()))
+s, n = map (int, input(). split())
+dp = [0] * (s+1)
 
-m = int(input())
-b = list(map(int, input().split()))
+for _ in range (n) :
+    w, v = map(int, input (). split())
+    for j in range (w, s+1):
+        dp[j] = max(dp[j], dp[j-w] + v)
 
-dp = [[0] * n for _ in range(m)]
-
-for i in range(m):
-    for j in range(n):
-        if j == 0:
-            if i != 0:
-                dp[i][j] = dp[i - 1][j]
-
-        dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
-
-        if b[i] == a[j]:
-            dp[i][j] += 1
-
-print(dp[-1][-1])
+print(dp[s])

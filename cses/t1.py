@@ -1,15 +1,36 @@
-t = int(input())
+s = input()
 
-for _ in range(t):
-    a, b = map(int, input().split())
+d = {}
 
-    ta = (a // 3) * 3
-    tb = (b // 3) * 3
+for char in s:
+    d[char] = d.get(char, 0) + 1
 
-    if (a - ta, b - tb) in ((0, 0), (1, 2), (2, 1)):
-        if a > b * 2 or b > a * 2:
-            print("NO")
+res = ""
+
+if len(s) % 2 == 0:
+    for k, v in d.items():
+        if v % 2 == 1:
+            print("NO SOLUTION")
+            break
         else:
-            print("YES")
+            res += k * (v // 2)
     else:
-        print("NO")
+        print(res + res[::-1])
+else:
+    odd_lett = None
+
+    for k, v in d.items():
+        if v % 2 == 1:
+            if not odd_lett:
+                odd_lett = k
+                res += k * (v // 2)
+            else:
+                print("NO SOLUTION")
+                break
+        else:
+            res += k * (v // 2)
+    else:
+        if odd_lett:
+            print(res + odd_lett + res[::-1])
+        else:
+            print(res + res[::-1])

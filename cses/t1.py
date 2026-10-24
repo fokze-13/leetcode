@@ -1,3 +1,10 @@
 n = int(input())
 
-print(int((2 ** n) % (10**9 + 7)))
+cnt = 0
+p = 5
+
+while p <= n:
+    cnt += n // p
+    p *= 5
+
+print(cnt)

@@ -1,17 +1,16 @@
-n = int(input())
+import sys
 
-dp = [0, 1]
+for s in sys.stdin:
 
-for k in range(2, n + 1):
-    mn_s = k
-    for i in range(1, k // 2 + 1):
-        mn_s = min(mn_s, dp[i] + dp[k - i])
+    dp = [float('inf')] * (len(s) + 1)
+    dp[0] = 0
 
-    mn_p = k
-    for i in range(2, k):
-        if k % i == 0:
-            mn_p = min(mn_p, dp[i] + dp[k // i])
+    for i in range(len(s)):
+        if s[i] == 'X':
+            for j in range(i + 1):
+                dp[i + 1] = min(dp[i + 1], dp[j] + (i - j + 1) ** 0.5)
+        else:
+            dp[i + 1] = dp[i]
 
-    dp.append(min(mn_p, mn_s))
+    print(round(dp[-1], 4))
 
-print(dp[-1])

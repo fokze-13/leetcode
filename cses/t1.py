@@ -1,14 +1,18 @@
-n = int(input())
+x = int(input())
 
-code = ["0", "1"]
+moves = []
 
-for i in range(n - 1):
-    code_rev = code[::-1]
+def hanoi(n: int, a: int, c: int, b: int) -> None:
+    global moves
 
-    for j in range(len(code)):
-        code[j] = "0" + code[j]
-        code_rev[j] = "1" + code_rev[j]
+    if n == 0:
+        return
+    hanoi(n - 1, a, b, c)
+    moves.append((a,c))
+    hanoi(n - 1, b, c, a)
 
-    code.extend(code_rev)
+hanoi(x, 1, 3, 2)
 
-print("\n".join(code))
+print(len(moves))
+for move in moves:
+    print(*move)

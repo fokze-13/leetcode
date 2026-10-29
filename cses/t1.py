@@ -1,10 +1,15 @@
-from itertools import permutations
+from itertools import combinations
 
-s = input()
+n = int(input())
+a = list(map(int, input().split()))
 
-perms = sorted(list(set(sorted(permutations(s)))))
+total_sum = sum(a)
+mn = float('inf')
 
-print(len(perms))
+for i in range(1, (n + 1) // 2 + 1):
+    combs = combinations(a, i)
 
-for perm in perms:
-    print("".join(perm))
+    for comb in combs:
+        mn = min(mn, abs(total_sum - 2 * sum(comb)))
+
+print(mn)

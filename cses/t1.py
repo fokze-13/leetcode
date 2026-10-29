@@ -1,18 +1,10 @@
-x = int(input())
+from itertools import permutations
 
-moves = []
+s = input()
 
-def hanoi(n: int, a: int, c: int, b: int) -> None:
-    global moves
+perms = sorted(list(set(sorted(permutations(s)))))
 
-    if n == 0:
-        return
-    hanoi(n - 1, a, b, c)
-    moves.append((a,c))
-    hanoi(n - 1, b, c, a)
+print(len(perms))
 
-hanoi(x, 1, 3, 2)
-
-print(len(moves))
-for move in moves:
-    print(*move)
+for perm in perms:
+    print("".join(perm))

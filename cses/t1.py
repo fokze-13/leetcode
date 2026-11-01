@@ -1,23 +1,14 @@
-board = [input().strip() for _ in range(8)]
+n = int(input())
+a = list(map(int, input().split()))
 
-col = [False] * 8
-d1 = [False] * 15
-d2 = [False] * 15
-ans = 0
+a.sort()
 
-def solve(r):
-    global ans
-    if r == 8:
-        ans += 1
-        return
-    for c in range(8):
-        if board[r][c] == '*':
-            continue
-        if col[c] or d1[r + c] or d2[r - c + 7]:
-            continue
-        col[c] = d1[r + c] = d2[r - c + 7] = True
-        solve(r + 1)
-        col[c] = d1[r + c] = d2[r - c + 7] = False
+curr = a[0]
+cnt = 1
 
-solve(0)
-print(ans)
+for i in range(1, n):
+    if a[i] != curr:
+        cnt += 1
+        curr = a[i]
+
+print(cnt)

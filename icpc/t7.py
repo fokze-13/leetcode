@@ -1,64 +1,58 @@
-k = int(input())
+n = int(input())
+a = list(map(int, input().split()))
 
-xs = []
-ys = []
+tree = [(0,)] * n + [(i,) for i in a]
 
-max_x = -1
+for i in range(n - 1, 0, -1):
+    cands = [*tree[2 * i], *tree[2 * i + 1]]
+    cands.sort(reverse=True)
 
-for _ in range(k):
-    x, y = map(int, input().split())
+    tree[i] = (cands[0], cands[1])
 
-    xs.append(x)
-    ys.append(y)
+q = int(input())
 
-    if x > 0:
-        max_x = max(max_x, y)
+for _ in range(q):
+    t, i, j = input().split()
+
+    i = int(i)
+    j = int(j)
+
+    if t == "Q":
+        i += n - 1
+        j += n - 1
+
+        res = (0, 0)
+
+        while i <= j:
+            if i % 2 == 1:
+                cands = [*tree[i], *res]
+                cands.sort(reverse=True)
+
+                res = (cands[0], cands[1])
+
+                i += 1
+            if j % 2 == 0:
+                cands = [*tree[j], *res]
+                cands.sort(reverse=True)
+
+                res = (cands[0], cands[1])
+
+                j -= 1
+
+            i //= 2
+            j //= 2
+
+        print(sum(res))
     else:
-        max_x = max(max_x, abs(x))
+        i += n - 1
 
-seq = [((n ** 2) % 12345) + ((n ** 3) % 23456) for n in range(1, max_x + 1)]
+        tree[i] = (j,)
 
-tree_max = [0] * max_x + seq
-tree_min = [0] * max_x + seq
+        while i > 1:
+            i //= 2
 
-for i in range(max_x - 1, 0, -1):
-    tree_max[i] = max(tree_max[2 * i], tree_max[2 * i + 1])
-    tree_min[i] = min(tree_min[2 * i], tree_min[2 * i + 1])
+            cands = [*tree[2 * i], *tree[2 * i + 1]]
+            cands.sort(reverse=True)
 
-for x, y in zip(xs, ys):
-    if x > 0:
-        mn = float('inf')
-        mx = float('-inf')
-
-        x += max_x - 1
-        y += max_x - 1
-
-        while x <= y:
-            if x % 2 == 1:
-                mn = min(mn, tree_min[x])
-                mx = max(mx, tree_max[x])
-
-                x += 1
-            if y % 2 == 0:
-                mn = min(mn, tree_min[y])
-                mx = max(mx, tree_max[y])
-
-                y -= 1
-
-            x //= 2
-            y //= 2
-
-        print(abs(mn - mx))
-    else:
-        x = -x
-        x += max_x - 1
-
-        tree_max[x] = y
-        tree_min[x] = y
-
-        while x > 1:
-            x //= 2
-
-            tree_max[x] = max(tree_max[2 * x], tree_max[2 * x + 1])
-            tree_min[x] = min(tree_min[2 * x], tree_min[2 * x + 1])
+            tree[i] = (cands[0], cands[1])
 

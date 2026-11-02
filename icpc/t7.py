@@ -1,39 +1,64 @@
-n, k = map(int, input().split())
+k = int(input())
 
-tree = [0] * (2 * n)
+xs = []
+ys = []
 
-for i in range(n - 1, 0, -1):
-    tree[i] = tree[2 * i] + tree[2 * i + 1]
-
+max_x = -1
 
 for _ in range(k):
-    q, l, r = input().split()
+    x, y = map(int, input().split())
 
-    l = int(l)
-    r = int(r)
+    xs.append(x)
+    ys.append(y)
 
-    if q == "Q":
-        res = 0
-        l += n - 1
-        r += n - 1
-
-        while l <= r:
-            if l % 2 == 1:
-                res += tree[l]
-                l += 1
-            if r % 2 == 0:
-                res += tree[r]
-                r -= 1
-            l //= 2
-            r //= 2
-
-        print(res)
+    if x > 0:
+        max_x = max(max_x, y)
     else:
-        i, x = l, r
-        i += n - 1
+        max_x = max(max_x, abs(x))
 
-        tree[i] = x
+seq = [((n ** 2) % 12345) + ((n ** 3) % 23456) for n in range(1, max_x + 1)]
 
-        while i > 1:
-            i //= 2
-            tree[i] = tree[2 * i] + tree[2 * i + 1]
+tree_max = [0] * max_x + seq
+tree_min = [0] * max_x + seq
+
+for i in range(max_x - 1, 0, -1):
+    tree_max[i] = max(tree_max[2 * i], tree_max[2 * i + 1])
+    tree_min[i] = min(tree_min[2 * i], tree_min[2 * i + 1])
+
+for x, y in zip(xs, ys):
+    if x > 0:
+        mn = float('inf')
+        mx = float('-inf')
+
+        x += max_x - 1
+        y += max_x - 1
+
+        while x <= y:
+            if x % 2 == 1:
+                mn = min(mn, tree_min[x])
+                mx = max(mx, tree_max[x])
+
+                x += 1
+            if y % 2 == 0:
+                mn = min(mn, tree_min[y])
+                mx = max(mx, tree_max[y])
+
+                y -= 1
+
+            x //= 2
+            y //= 2
+
+        print(abs(mn - mx))
+    else:
+        x = -x
+        x += max_x - 1
+
+        tree_max[x] = y
+        tree_min[x] = y
+
+        while x > 1:
+            x //= 2
+
+            tree_max[x] = max(tree_max[2 * x], tree_max[2 * x + 1])
+            tree_min[x] = min(tree_min[2 * x], tree_min[2 * x + 1])
+

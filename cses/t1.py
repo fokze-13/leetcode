@@ -1,14 +1,25 @@
-n = int(input())
+n, m, k = map(int, input().split())
 a = list(map(int, input().split()))
+b = list(map(int, input().split()))
 
 a.sort()
+b.sort()
 
-curr = a[0]
-cnt = 1
+cnt = 0
 
-for i in range(1, n):
-    if a[i] != curr:
+i = j = 0
+
+while i < n and j < m:
+    if b[j] < a[i] - k:
+        j += 1
+
+    elif b[j] > a[i] + k:
+        i += 1
+
+    else:
         cnt += 1
-        curr = a[i]
+        i += 1
+        j += 1
+
 
 print(cnt)

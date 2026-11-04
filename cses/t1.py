@@ -1,25 +1,28 @@
-n, m, k = map(int, input().split())
-a = list(map(int, input().split()))
-b = list(map(int, input().split()))
+n, x = map(int, input().split())
 
-a.sort()
-b.sort()
+p = list(map(int, input().split()))
+
+p.sort()
+
+i = 0
+j = n - 1
 
 cnt = 0
 
-i = j = 0
+while i < j:
+    if p[i] + p[j] <= x:
+       i += 1
+       j -= 1
 
-while i < n and j < m:
-    if b[j] < a[i] - k:
-        j += 1
-
-    elif b[j] > a[i] + k:
-        i += 1
+    elif p[j] > p[i]:
+        j -= 1
 
     else:
-        cnt += 1
         i += 1
-        j += 1
 
+    cnt += 1
+
+if i == j:
+    cnt += 1
 
 print(cnt)

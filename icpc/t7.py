@@ -1,58 +1,84 @@
-n = int(input())
-a = list(map(int, input().split()))
+import sys
 
-tree = [(0,)] * n + [(i,) for i in a]
+inp = sys.stdin.buffer.read().split()
+out = []
 
-for i in range(n - 1, 0, -1):
-    cands = [*tree[2 * i], *tree[2 * i + 1]]
-    cands.sort(reverse=True)
+p = 0
 
-    tree[i] = (cands[0], cands[1])
+while True:
+    n, q = int(inp[p]), int(inp[p + 1])
+    a = [int(inp[i]) for i in range(p + 2, p + 2 + n)]
 
-q = int(input())
+    p += n + 2
 
-for _ in range(q):
-    t, i, j = input().split()
+    b = []
+    mp = {}
+    mp2 = {}
 
-    i = int(i)
-    j = int(j)
+    curr = a[0]
+    begin_i = 0
 
-    if t == "Q":
-        i += n - 1
-        j += n - 1
+    cnt = 0
+    j = 0
 
-        res = (0, 0)
+    for i, elem in enumerate(a):
+        if elem == curr:
+            cnt += 1
+        else:
+            b.append(cnt)
+            mp2[j] = (begin_i, i)
 
-        while i <= j:
-            if i % 2 == 1:
-                cands = [*tree[i], *res]
-                cands.sort(reverse=True)
+            curr = elem
+            cnt = 1
+            j += 1
 
-                res = (cands[0], cands[1])
+            begin_i = i
 
-                i += 1
-            if j % 2 == 0:
-                cands = [*tree[j], *res]
-                cands.sort(reverse=True)
+        mp[i] = j
 
-                res = (cands[0], cands[1])
+    b.append(cnt)
+    mp2[j] = (begin_i, n)
 
-                j -= 1
+    tree = [0] * len(b) + b
 
-            i //= 2
-            j //= 2
+    for i in range(len(b) - 1, 0, -1):
+        tree[i] = max(tree[2 * i], tree[2 * i + 1])
 
-        print(sum(res))
-    else:
-        i += n - 1
 
-        tree[i] = (j,)
+    for i in range(q):
+        l, r = int(inp[p]), int(inp[p + 1])
+        p += 2
 
-        while i > 1:
-            i //= 2
+        l -= 1
+        r -= 1
 
-            cands = [*tree[2 * i], *tree[2 * i + 1]]
-            cands.sort(reverse=True)
+        if mp[l] == mp[r]:
+            out.append(str(r - l + 1))
+            continue
 
-            tree[i] = (cands[0], cands[1])
+        l_b = mp[l] + 1 + len(b)
+        r_b = mp[r] - 1 + len(b)
 
+        ans = -1
+
+        while l_b <= r_b:
+            if l_b % 2 == 1:
+                ans = max(ans, tree[l_b])
+                l_b += 1
+
+            if r_b % 2 == 0:
+                ans = max(ans, tree[r_b])
+                r_b -= 1
+
+            l_b //= 2
+            r_b //= 2
+
+        ans = max(ans, mp2[mp[l]][1] - l)
+        ans = max(ans, r - mp2[mp[r]][0] + 1)
+
+        out.append(str(ans))
+
+    if inp[p] == b'0':
+        break
+
+sys.stdout.write("\n".join(out))

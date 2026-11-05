@@ -1,32 +1,17 @@
 import sys
-from bisect import bisect_right
 
 def main():
     data = sys.stdin.buffer.read().split()
-    n, m = int(data[0]), int(data[1])
-    h = sorted(map(int, data[2:2 + n]))
-    queries = data[2 + n:2 + n + m]
+    a = sorted(map(int, data[1::2]))
+    b = sorted(map(int, data[2::2]))
 
-    parent = list(range(n + 1))
-
-    def find(x):
-        root = x
-        while parent[root] != root:
-            root = parent[root]
-        while parent[x] != root:
-            parent[x], x = root, parent[x]
-        return root
-
-    out = []
-    for q in queries:
-        t = int(q)
-        i = bisect_right(h, t)
-        j = find(i)
-        if j == 0:
-            out.append(-1)
-        else:
-            out.append(h[j - 1])
-            parent[j] = j - 1
-    print("\n".join(map(str, out)))
+    j = 0
+    mx = 0
+    for i, x in enumerate(a):
+        while b[j] < x:
+            j += 1
+        if i + 1 - j > mx:
+            mx = i + 1 - j
+    print(mx)
 
 main()

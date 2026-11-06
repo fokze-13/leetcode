@@ -1,17 +1,14 @@
-import sys
+n = int(input())
+a = [tuple(map(int, input().split())) for _ in range(n)]
 
-def main():
-    data = sys.stdin.buffer.read().split()
-    a = sorted(map(int, data[1::2]))
-    b = sorted(map(int, data[2::2]))
+a.sort(key = lambda x: x[1])
 
-    j = 0
-    mx = 0
-    for i, x in enumerate(a):
-        while b[j] < x:
-            j += 1
-        if i + 1 - j > mx:
-            mx = i + 1 - j
-    print(mx)
+last = a[0][1]
+cnt = 1
 
-main()
+for l, r in a:
+    if l >= last:
+       cnt += 1
+       last = r
+
+print(cnt)

@@ -1,47 +1,57 @@
 import sys
 
-inp = sys.stdin.buffer
-out = []
+def main():
+    data = sys.stdin.buffer.read().split()
+    p = 0
+    total = len(data)
+    out = []
 
-n, m = map(int, inp.readline().split())
+    while p + 1 < total:
+        n = int(data[p])
+        m = int(data[p + 1])
+        p += 2
 
-tree = [0] * (2 * n)
+        sz = 1
+        while sz < n + 1:
+            sz <<= 1
+        t = [float('inf')] * (2 * sz)
 
-for _ in range(m):
-    q = inp.readline().split()
+        pos = 1 + sz
+        t[pos] = 0
+        pos >>= 1
+        while pos:
+            t[pos] = 0
+            pos >>= 1
 
-    if q[0] == b'A':
-        l = int(q[1])
-        r = int(q[2])
-        d = int(q[3])
+        for _ in range(m):
+            i = int(data[p])
+            j = int(data[p + 1])
+            p += 2
 
-        l += n
-        r += n
+            l = i + sz
+            r = j + sz + 1
+            res = float('inf')
+            while l < r:
+                if l & 1:
+                    if t[l] < res:
+                        res = t[l]
+                    l += 1
+                if r & 1:
+                    r -= 1
+                    if t[r] < res:
+                        res = t[r]
+                l >>= 1
+                r >>= 1
 
-        while l <= r:
-            if l % 2 == 1:
-                tree[l] += d
-                l += 1
+            v = res + 1
+            pos = j + sz
+            if v < t[pos]:
+                while pos and t[pos] > v:
+                    t[pos] = v
+                    pos >>= 1
 
-            if r % 2 == 0:
-                tree[r] += d
-                r -= 1
+        out.append(t[sz + n])
 
-            l //= 2
-            r //= 2
+    print("\n".join(map(str, out)))
 
-    else:
-        i = int(q[1])
-
-        i += n
-        res = tree[i]
-
-        while i > 1:
-            i //= 2
-            res += tree[i]
-
-        out.append(res)
-
-sys.stdout.write("\n".join(map(str, out)))
-if out:
-    sys.stdout.write("\n")
+main()

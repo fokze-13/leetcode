@@ -3,11 +3,10 @@ a = list(map(int, input().split()))
 
 a.sort()
 
-median = a[n // 2]
-
-cnt = 0
+s = 0
 
 for elem in a:
-    cnt += abs(elem - median)
+    if elem <= s + 1:
+        s += elem
 
-print(cnt)
+print(s + 1)

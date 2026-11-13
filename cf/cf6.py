@@ -1,16 +1,43 @@
-def sol(coins: list[int], amount: int) -> int:
-    dp = [float("inf")] * (amount + 1)
-    dp[0] = 0
+t = int(input())
 
-    for i in range(1, amount + 1):
-        print(dp)
-        for coin in coins:
-            if i - coin >= 0:
-                dp[i] = min(dp[i], dp[i - coin] + 1)
+for _ in range(t):
+    n = int(input())
+    a = list(map(int, input().split()))
+    b = list(map(int, input().split()))
 
-    if dp[amount] == float("inf"):
-        return - 1
-    return int(dp[amount])
+    keys = set(a + b)
 
+    d_a = {}
 
-print(sol([1, 2, 5], 11))
+    cnt = 1
+
+    for i in range(1, n):
+        if a[i] == a[i - 1]:
+            cnt += 1
+        else:
+            d_a[a[i - 1]] = max(d_a.get(a[i - 1], 0), cnt)
+
+            cnt = 1
+
+    d_a[a[n - 1]] = max(d_a.get(a[n - 1], 0), cnt)
+
+    d_b = {}
+
+    cnt = 1
+
+    for i in range(1, n):
+        if b[i] == b[i - 1]:
+            cnt += 1
+        else:
+            d_b[b[i - 1]] = max(d_b.get(b[i - 1], 0), cnt)
+
+            cnt = 1
+
+    d_b[b[n - 1]] = max(d_b.get(b[n - 1], 0), cnt)
+
+    mx = 0
+
+    for key in keys:
+        mx = max(mx, d_a.get(key, 0) + d_b.get(key, 0))
+
+    print(mx)

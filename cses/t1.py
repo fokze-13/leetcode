@@ -1,17 +1,29 @@
-from bisect import bisect_right
+x, n = map(int, input().split())
+p = list(map(int, input().split()))
 
+q = [0] + sorted(p) + [x]
 
-n = int(input())
-a = list(map(int, input().split()))
+d = {0: (x, x), x: (0, 0)}
+mx = -1
 
-mins = []
+for i in range(1, n + 1):
+    d[q[i]] = (q[i - 1], q[i + 1])
 
-for elem in a:
-    r = bisect_right(mins, elem)
+    mx = max(mx, q[i] - q[i - 1], q[i + 1] - q[i])
 
-    if r == len(mins):
-        mins.append(elem)
-    else:
-        mins[r] = elem
+out = [mx]
 
-print(len(mins))
+for i in reversed(p):
+    left = d[i][0]
+    right = d[i][1]
+
+    d[left] = (d[left][0], right)
+    d[right] = (left, d[right][1])
+
+    mx = max(mx, right - left)
+
+    out.append(mx)
+
+out.pop()
+
+print(*reversed(out))

@@ -1,47 +1,25 @@
-import sys
+from collections import defaultdict
 
+n = int(input())
+a = list(map(int, input().split()))
 
-def main():
-    data = sys.stdin.buffer.read().split()
-    n, m = int(data[0]), int(data[1])
+d = defaultdict(int)
 
-    arr = [0] * (n + 2)
-    pos = [0] * (n + 2)
-    for i in range(1, n + 1):
-        v = int(data[1 + i])
-        arr[i] = v
-        pos[v] = i
+l = 0
+r = 0
 
-    # вклад пары (v, v+1): 1, если v+1 стоит левее v
-    ans = 1
-    for v in range(1, n):
-        if pos[v + 1] < pos[v]:
-            ans += 1
+mx = 0
 
-    out = []
-    idx = n + 2
-    for _ in range(m):
-        a = int(data[idx])
-        b = int(data[idx + 1])
-        idx += 2
+while r < n:
+    if d[a[r]] > 0:
+        d[a[l]] -= 1
 
-        x, y = arr[a], arr[b]
-        affected = {x - 1, x, y - 1, y}
+        l += 1
+    else:
+        d[a[r]] += 1
 
-        for v in affected:
-            if 1 <= v < n and pos[v + 1] < pos[v]:
-                ans -= 1
+        mx = max(mx, r - l + 1)
 
-        arr[a], arr[b] = y, x
-        pos[x], pos[y] = b, a
+        r += 1
 
-        for v in affected:
-            if 1 <= v < n and pos[v + 1] < pos[v]:
-                ans += 1
-
-        out.append(ans)
-
-    sys.stdout.write("\n".join(map(str, out)) + "\n")
-
-
-main()
+print(mx)

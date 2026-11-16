@@ -1,25 +1,17 @@
-from collections import defaultdict
+from bisect import bisect_right
+
 
 n = int(input())
 a = list(map(int, input().split()))
 
-d = defaultdict(int)
+mins = []
 
-l = 0
-r = 0
+for elem in a:
+    r = bisect_right(mins, elem)
 
-mx = 0
-
-while r < n:
-    if d[a[r]] > 0:
-        d[a[l]] -= 1
-
-        l += 1
+    if r == len(mins):
+        mins.append(elem)
     else:
-        d[a[r]] += 1
+        mins[r] = elem
 
-        mx = max(mx, r - l + 1)
-
-        r += 1
-
-print(mx)
+print(len(mins))

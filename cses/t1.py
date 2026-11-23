@@ -1,18 +1,15 @@
-n = int(input())
-a = list(map(int, input().split()))
+import sys
+from collections import Counter
 
-d = {}
+def main():
+    data = sys.stdin.buffer.read().split()
+    n = int(data[0])
+    MOD = 10**9 + 7
 
-l = 0
+    ans = 1
+    for c in Counter(data[1:n+1]).values():
+        ans = ans * (c + 1) % MOD
 
-cnt = 0
+    print((ans - 1) % MOD)
 
-for i in range(n):
-    if d.get(a[i]) is not None:
-        l = max(l, d[a[i]] + 1)
-
-    d[a[i]] = i
-
-    cnt += i - l + 1
-
-print(cnt)
+main()

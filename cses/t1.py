@@ -1,24 +1,18 @@
-import sys
+n = int(input())
+a = list(map(int, input().split()))
 
-def main():
-    inp = sys.stdin.buffer.read().split()
+d = {}
 
-    n, x = int(inp[0]), int(inp[1])
-    s = list(sorted(map(int, inp[2:])))
+l = 0
 
-    dp = [float('inf')] * (x + 1)
-    dp[0] = 0
+cnt = 0
 
-    for i in range(1, x + 1):
-        for k in s:
-            if k > i:
-                break
+for i in range(n):
+    if d.get(a[i]) is not None:
+        l = max(l, d[a[i]] + 1)
 
-            dp[i] = min(dp[i], dp[i - k] + 1)
+    d[a[i]] = i
 
-    if dp[-1] == float('inf'):
-        sys.stdout.write('-1')
-    else:
-        sys.stdout.write(str(dp[-1]))
+    cnt += i - l + 1
 
-main()
+print(cnt)

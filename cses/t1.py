@@ -4,7 +4,7 @@ a = list(map(int, input().split()))
 tree = [0] * n + a
 
 for i in range(n - 1, 0, -1):
-    tree[i] = tree[2 * i + 1] + tree[2 * i]
+    tree[i] = min(tree[2 * i + 1], tree[2 * i])
 
 for _ in range(q):
     t, l, r = map(int, input().split())
@@ -14,15 +14,15 @@ for _ in range(q):
         l += n - 1
         r += n - 1
 
-        res = 0
+        res = float('inf')
 
         while l <= r:
             if l & 1:
-                res += tree[l]
+                res = min(res, tree[l])
                 l += 1
 
             if not (r & 1):
-                res += tree[r]
+                res = min(res, tree[r])
                 r -= 1
 
             l >>= 1
@@ -35,12 +35,9 @@ for _ in range(q):
 
         k += n - 1
 
-        u = v - tree[k]
         tree[k] = v
 
-        k >>= 1
-
         while k > 0:
-            tree[k] += u
             k >>= 1
+            tree[k] = min(tree[k * 2], tree[k * 2 + 1])
 

@@ -1,43 +1,32 @@
 n, q = map(int, input().split())
+
 a = list(map(int, input().split()))
 
-tree = [0] * n + a
+f = [0] * n
 
-for i in range(n - 1, 0, -1):
-    tree[i] = min(tree[2 * i + 1], tree[2 * i])
+for i in range(n):
+    j = i
+    while j < n:
+        f[j] ^= a[i]
+        j = j | (j + 1)
+
 
 for _ in range(q):
-    t, l, r = map(int, input().split())
+    l, r = map(int, input().split())
 
+    l -= 2
+    r -= 1
 
-    if t == 2:
-        l += n - 1
-        r += n - 1
+    pref_l = 0
 
-        res = float('inf')
+    while l >= 0:
+        pref_l ^= f[l]
+        l = (l & (l + 1)) - 1
 
-        while l <= r:
-            if l & 1:
-                res = min(res, tree[l])
-                l += 1
+    pref_r = 0
 
-            if not (r & 1):
-                res = min(res, tree[r])
-                r -= 1
+    while r >= 0:
+        pref_r ^= f[r]
+        r = (r & (r + 1)) - 1
 
-            l >>= 1
-            r >>= 1
-
-        print(res)
-
-    else:
-        k, v = l, r
-
-        k += n - 1
-
-        tree[k] = v
-
-        while k > 0:
-            k >>= 1
-            tree[k] = min(tree[k * 2], tree[k * 2 + 1])
-
+    print(pref_r ^ pref_l)
